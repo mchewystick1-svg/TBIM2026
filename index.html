@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TBIM BIM Bootcamp 2026 – Interactive Map</title>
+<style>
+:root{--navy:#0b2d4d;--blue:#1776d2;--cyan:#e9f6ff;--line:#d8e1e8;--text:#172230;--muted:#687483;--green:#16a36a;--amber:#e8a400;--shadow:0 18px 45px rgba(8,35,60,.18)}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--text);background:#f3f7fa}
+.top{background:var(--navy);color:white;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.top h1{font-size:21px;margin:0}.meta{opacity:.86;font-size:13px}.shell{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:16px;padding:16px;max-width:1750px;margin:auto}
+.panel{background:#fff;border:1px solid #e4e9ee;border-radius:18px;box-shadow:var(--shadow)}.tools{padding:12px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid #edf1f4}
+input,select,button{border:1px solid #ccd7e0;border-radius:10px;padding:10px 12px;font:inherit;background:white}input{min-width:240px;flex:1}button{cursor:pointer}button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.map-wrap{padding:12px}.map-scroll{overflow-x:auto;border-radius:14px}.map{position:relative;width:100%;background:#dfe8ef;border-radius:14px;overflow:hidden}.map img{width:100%;height:auto;display:block}
+.hotspot{position:absolute;padding:0;min-width:0;border:2px solid rgba(255,255,255,.92);background:rgba(23,118,210,.20);box-shadow:0 0 0 2px rgba(23,118,210,.35);border-radius:7px;cursor:pointer;transition:.15s;transform:rotate(var(--rot,0deg))}.hotspot:hover{transform:rotate(var(--rot,0deg)) scale(1.04);background:rgba(23,118,210,.34);z-index:5}.hotspot span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(calc(-1 * var(--rot,0deg)));background:rgba(11,45,77,.92);color:white;font-size:11px;padding:3px 6px;border-radius:5px;white-space:nowrap;pointer-events:none}.hotspot.partnership{background:rgba(22,163,106,.16);box-shadow:0 0 0 2px rgba(22,163,106,.35)}.hotspot.facility{background:rgba(232,164,0,.18);box-shadow:0 0 0 2px rgba(232,164,0,.35)}
+.side{display:flex;flex-direction:column;gap:16px}.side .panel{padding:16px}.side h2{font-size:17px;margin:0 0 12px}.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--muted)}.dot{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:4px}.d-job{background:#1776d2}.d-partner{background:#16a36a}.d-fac{background:#e8a400}
+.room-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.room-tabs button{font-size:12px;padding:7px 9px}.class-card{border:1px solid #e6ebef;border-radius:12px;padding:11px;margin-bottom:9px;cursor:pointer}.class-card:hover{border-color:#90bce4}.time{font-weight:800;color:#0b5faa}.topic{font-weight:700;margin:4px 0}.small{font-size:12px;color:var(--muted)}.status{display:inline-block;margin-top:6px;font-size:11px;padding:3px 7px;border-radius:999px;background:#fff4cf;color:#876000}.status.ready{background:#ddf5e9;color:#08784a}
+.modal{position:fixed;inset:0;background:rgba(3,15,27,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.modal.show{display:flex}.card{width:min(680px,100%);max-height:88vh;overflow:auto;background:white;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.3)}.card-head{padding:18px 20px;background:var(--navy);color:white;display:flex;justify-content:space-between;gap:12px}.card-head h3{margin:0;font-size:20px}.close{background:transparent;color:#fff;border-color:rgba(255,255,255,.35);padding:5px 10px}.card-body{padding:20px}.kv{display:grid;grid-template-columns:150px 1fr;gap:8px 14px;margin:12px 0}.kv b{color:#435466}.takeaway{background:#f4f8fb;border-left:4px solid #1776d2;padding:12px 14px;border-radius:8px;white-space:pre-line}.logo{height:110px;display:flex;align-items:center;justify-content:center;border:1px solid #e6ebef;border-radius:12px;background:#fff;padding:14px;margin-bottom:6px}.logo img{max-width:100%;max-height:100%;object-fit:contain}.logo span{font-size:22px;font-weight:800;color:#8a97a5;text-align:center}.empty{color:#9a6b00;background:#fff7dc;padding:10px;border-radius:8px}.mobile-note{font-size:11px;color:var(--muted);margin-top:8px}
+[hidden]{display:none!important}.shell>*{min-width:0}
+.banner{position:relative;display:block;width:100%;padding:0;border:0;border-radius:0;overflow:hidden;background:#2a3f55;cursor:zoom-in}.banner::before{content:"";position:absolute;inset:-20px;background:url(assets/banner.webp) center/cover;filter:blur(18px) brightness(.8)}.banner img{position:relative;display:block;margin:0 auto;width:100%;max-width:1100px;height:auto}.banner-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 22px;background:var(--navy);color:#fff;font-size:13px}.banner-bar b{font-size:15px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hotspot.has-logo{background:rgba(255,255,255,.94);padding:2px}.hotspot.has-logo img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}.hotspot.has-logo:hover{transform:rotate(var(--rot,0deg)) scale(1.9);z-index:9;background:#fff}
+.bid{position:absolute;transform:translateX(-50%);background:rgba(11,45,77,.92);color:#fff;font-size:11px;font-weight:700;padding:2px 6px;border-radius:5px;white-space:nowrap;pointer-events:none;z-index:4}.bid.above{transform:translate(-50%,calc(-100% - 3px))}.bid.below{margin-top:3px}.bid.left{transform:translate(calc(-100% - 4px),-50%)}
+.map svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}.hs-poly{pointer-events:auto;cursor:pointer;fill:rgba(232,164,0,.2);stroke:rgba(255,255,255,.95);stroke-width:2;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 1.5px rgba(232,164,0,.9));transition:fill .15s}.hs-poly:hover,.hs-poly:focus{fill:rgba(232,164,0,.38);outline:none}.poly-logo{position:absolute;transform:translate(-50%,-50%);width:8%;height:4.6%;padding:2px 4px;background:rgba(255,255,255,.95);border:1px solid #e8a400;border-radius:6px;box-shadow:0 2px 6px rgba(8,35,60,.2);cursor:pointer;z-index:4;transition:transform .15s}.poly-logo img{width:100%;height:100%;object-fit:contain;display:block}.poly-logo:hover{transform:translate(-50%,-50%) scale(1.8);z-index:9}.poly-label{position:absolute;transform:translate(-50%,-50%);background:rgba(11,45,77,.92);color:#fff;font-size:11px;padding:3px 6px;border-radius:5px;pointer-events:none;z-index:4}
+.tabbar{display:flex;gap:4px;padding:0 16px;background:var(--navy);overflow-x:auto}.tabbar button{background:transparent;color:#cfe0ef;border:0;border-radius:12px 12px 0 0;padding:11px 18px;font-weight:700;white-space:nowrap}.tabbar button.active{background:#f3f7fa;color:var(--navy)}
+.floor{position:relative;width:100%;border-radius:14px;overflow:hidden;background:#fff;border:1px solid #e4e9ee}.floor img{width:100%;height:auto;display:block}.floor svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.route-halo{fill:none;stroke:#fff;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;opacity:.9}.route-line{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:12 9;animation:dash .9s linear infinite}@keyframes dash{to{stroke-dashoffset:-21}}@media(prefers-reduced-motion:reduce){.route-line{animation:none}}
+.pin{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:5px;padding:3px 9px 3px 3px;border-radius:999px;background:#fff;border:1px solid #cbd6df;font-size:11px;font-weight:700;color:var(--navy);box-shadow:0 2px 8px rgba(8,35,60,.18);white-space:nowrap;z-index:3}.pin i{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;color:#fff;font-style:normal;font-size:11px;background:var(--c,var(--navy))}.pin{cursor:pointer}.pin:hover{z-index:6;transform:translate(-50%,-50%) scale(1.06)}.pin.dim{opacity:.5}.room-photo{display:block;width:100%;border-radius:10px;border:1px solid #e4e9ee;margin:10px 0 4px;cursor:zoom-in}.photo-note{font-size:12px;color:var(--muted);margin-bottom:10px}.pin.on{border-color:var(--rc);box-shadow:0 0 0 3px color-mix(in srgb,var(--rc) 30%,transparent),0 2px 8px rgba(8,35,60,.18);z-index:4}
+.goal{position:absolute;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--rc);box-shadow:0 0 0 0 var(--rc);animation:pulse 1.6s ease-out infinite;z-index:2}@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--rc) 60%,transparent)}100%{box-shadow:0 0 0 18px transparent}}
+.floor-scroll{overflow-x:auto;border-radius:14px}.floor-nav{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}.floor-nav button{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:700;font-size:13px;padding:8px 12px}.floor-nav button.back{background:#fff;color:var(--navy)}
+.floor-tabs{display:flex;gap:6px;flex-wrap:wrap}.floor-tabs button{font-size:13px;padding:8px 12px;position:relative}.floor-tabs button.used::after{content:"";position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--rc)}.floor-tabs button.active::after{background:#fff}.floor-title{margin-left:auto;align-self:center;font-weight:700;color:var(--muted);font-size:13px}
+.route-card{display:flex;gap:10px;align-items:center;width:100%;text-align:left;margin-bottom:8px;padding:10px 12px;border-radius:12px;border:1px solid #e6ebef}.route-card .sw{flex:none;width:10px;height:34px;border-radius:4px;background:var(--rc)}.route-card b{display:block;font-size:14px}.route-card small{color:var(--muted);font-size:12px}.route-card.active{color:var(--text);border-color:var(--rc);box-shadow:inset 0 0 0 1px var(--rc);background:color-mix(in srgb,var(--rc) 7%,#fff)}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}.steps li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:8px;padding:8px 6px;border-radius:10px;cursor:pointer}.steps li:hover{background:#f4f8fb}.steps li::before{content:counter(s);width:24px;height:24px;border-radius:50%;background:var(--rc);color:#fff;display:grid;place-items:center;font-weight:800;font-size:12px}.steps li.here{background:#f4f8fb}.fl{display:inline-block;font-size:11px;font-weight:800;color:var(--rc);border:1px solid var(--rc);border-radius:6px;padding:0 5px;margin-right:6px}
+.mini{display:flex;gap:10px;padding:7px 0;border-top:1px solid #edf1f4;font-size:13px;cursor:pointer}.mini .time{flex:none;width:92px;font-size:12px}.route-link{margin-top:14px;background:var(--navy);color:#fff;border-color:var(--navy);font-weight:700}
+@media(max-width:1050px){.shell{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr}}@media(max-width:700px){.shell{padding:8px}.side{display:block}.top{padding:14px}.hotspot span{display:none}.hotspot{border-width:1px;border-radius:3px;box-shadow:0 0 0 1px rgba(23,118,210,.45)}.kv{grid-template-columns:1fr}.tools input{min-width:100%}.pin:not(.on) span{display:none}.pin:not(.on){padding:2px}.tabbar{padding:0 8px}.tabbar button{padding:10px 12px;font-size:14px}.floor-title{display:none}.floor{width:860px}.bid,.poly-label{display:none}.poly-logo{width:12%;height:6%}.banner-bar{padding:6px 12px;font-size:12px}}
+</style>
+</head>
+<body>
+<header>
+<h1 class="sr-only">TBIM BIM Bootcamp 2026 · Interactive Event Map</h1>
+<button class="banner" id="banner" aria-label="View event poster"><img src="assets/banner.webp" alt="BIM Bootcamp 2026 — Beyond BIM: Digital Transformation and Information Management in AECO towards Sustainable Development in Thailand. Friday 9 October 2026, Sripatum University" /></button>
+<div class="banner-bar"><span><b>Interactive Event Map</b> · Friday 9 October 2026 · Sripatum University (SPU), Building 11</span><span>Tap the banner to view the poster</span></div>
+</header>
+<nav class="tabbar" role="tablist"><button class="active" data-tab="map" role="tab">Job Fair &amp; Partners</button><button data-tab="route" role="tab">Route &amp; Training Rooms</button></nav>
+<div class="shell" id="tab-map">
+  <section class="panel">
+    <div class="tools">
+      <input id="search" placeholder="Search booth, company, class or speaker…" />
+      <button class="filter active" data-filter="All">All</button><button class="filter" data-filter="Job Fair">Job Fair</button><button class="filter" data-filter="Partnership">Partnership</button><button class="filter" data-filter="Facility">Facility</button>
+    </div>
+    <div class="map-wrap"><div class="map-scroll" id="mapScroll"><div class="map" id="map"><img id="floorplan" src="assets/floorplan_clean.png" alt="1F Job Fair hall" /></div></div><div class="mobile-note">Tip: Click / tap a highlighted zone to open details. Hotspot positions can be edited in data.js or the Excel database.</div></div>
+  </section>
+  <aside class="side">
+    <section class="panel"><h2>Map Legend</h2><div class="legend"><span><i class="dot d-job"></i>Job Fair</span><span><i class="dot d-partner"></i>Partnership</span><span><i class="dot d-fac"></i>Facility</span></div></section>
+    <section class="panel"><h2>Training Room Schedule</h2><div class="room-tabs" id="roomTabs"></div><div id="schedule"></div></section>
+  </aside>
+</div>
+<div class="shell" id="tab-route" hidden>
+  <section class="panel">
+    <div class="tools"><div class="floor-tabs" id="floorTabs"></div><div class="floor-title" id="floorTitle"></div></div>
+    <div class="map-wrap"><div class="floor-scroll" id="floorScroll"><div class="floor" id="floor"><img id="floorImg" alt="Floor plan" /><svg id="floorSvg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg></div></div><div class="floor-nav" id="floorNav"></div><div class="mobile-note">Floor plans: SPU Building 11 (1F–3F TBIM layout plans, 14F from BIMBOOT CAMP2026 15 Sep 2026). Tap a pin for photos and details. Route points can be edited in routes.js.</div></div>
+  </section>
+  <aside class="side">
+    <section class="panel"><h2>Where do you want to go?</h2><div id="routeList"></div></section>
+    <section class="panel" id="routeInfo"></section>
+  </aside>
+</div>
+<div class="modal" id="modal"><article class="card"><div class="card-head"><h3 id="modalTitle">Details</h3><button class="close" id="close">Close</button></div><div class="card-body" id="modalBody"></div></article></div>
+<script src="data.js"></script>
+<script src="routes.js"></script>
+<script>
+const D=window.TBIM_DATA;if(D.event?.floorplan)document.getElementById('floorplan').src=D.event.floorplan;const map=document.getElementById('map'), modal=document.getElementById('modal'), modalTitle=document.getElementById('modalTitle'), modalBody=document.getElementById('modalBody');
+let currentFilter='All';
+function esc(v=''){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function showBooth(b){modalTitle.textContent=`${b.id} · ${b.name}`;const ph=R.places.find(p=>p.id===b.id&&p.photo);modalBody.innerHTML=(ph?`<img class="room-photo" src="${esc(ph.photo)}" alt="${esc(b.name)} photos" />`:'')+`<div class="logo">${b.logo?`<img src="${esc(b.logo)}" alt="${esc(b.name)} logo" />`:`<span>${esc(b.name)}</span>`}</div><div class="kv"><b>Category</b><span>${esc(b.category)}</span><b>Description</b><span>${b.description?esc(b.description):'<span class="empty">Database field not filled yet</span>'}</span><b>Products / Services</b><span>${b.products?esc(b.products):'—'}</span><b>Contact</b><span>${b.contact?esc(b.contact):'—'}</span><b>Phone</b><span>${b.phone?esc(b.phone):'—'}</span><b>Website</b><span>${b.website?`<a target="_blank" rel="noopener" href="${esc(b.website)}">${esc(b.website)}</a>`:'—'}</span></div>${b.note?`<div class="takeaway">${esc(b.note)}</div>`:''}`;const rt=R.routes.find(r=>r.id===BOOTH_ROUTE[b.id]);if(rt){const btn=document.createElement('button');btn.className='route-link';btn.textContent=`Show route to ${rt.id==='reg'?'Registration':rt.name} →`;btn.onclick=()=>{modal.classList.remove('show');showTab('route');selectRoute(rt.id)};modalBody.appendChild(btn)}modal.classList.add('show')}
+function showClass(c){modalTitle.textContent=c.topic;modalBody.innerHTML=`<div class="kv"><b>Speaker</b><span>${esc(c.speaker||'TBC')}</span><b>Company</b><span>${esc(c.org||'—')}</span></div>${c.takeaway?`<h4>Key Takeaway</h4><div class="takeaway">${esc(c.takeaway)}</div>`:`<div class="empty">Key Takeaway has not been filled yet.</div>`}`;const rt=R.routes.find(r=>r.room===c.room);if(rt){const b=document.createElement('button');b.className='route-link';b.textContent=`Show route to ${rt.name} →`;b.onclick=()=>{modal.classList.remove('show');showTab('route');selectRoute(rt.id)};modalBody.appendChild(b)}modal.classList.add('show')}
+const BOOTH_ROUTE={REG:'reg',TR1:'tr1',RESC:'tr2',BRK:'break'}; // booth popup → "Show route" in the Route tab
+const TAG_POS={P8:'left'}; // where the booth ID tag sits outside its box: above | below | left (default: top Job Fair row above, others below)
+function renderHotspots(){
+  map.querySelectorAll('.hotspot,.bid,.poly-label,.poly-logo,svg').forEach(e=>e.remove());
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 100 100');svg.setAttribute('preserveAspectRatio','none');map.appendChild(svg);
+  D.booths.filter(b=>(b.x!=null||b.poly)&&(currentFilter==='All'||b.category===currentFilter)&&(!q||(`${b.id} ${b.name} ${b.category} ${b.description||''}`).toLowerCase().includes(q))).forEach(b=>{
+    if(b.poly){ // non-rectangular zone, e.g. the curved ADVICE desks
+      const pg=document.createElementNS('http://www.w3.org/2000/svg','polygon');pg.setAttribute('points',b.poly.map(p=>p.join(',')).join(' '));pg.setAttribute('class','hs-poly');pg.setAttribute('tabindex','0');pg.setAttribute('role','button');pg.setAttribute('aria-label',`${b.id} ${b.name}`);
+      pg.innerHTML=`<title>${esc(b.id)} – ${esc(b.name)}</title>`;pg.onclick=()=>showBooth(b);pg.onkeydown=e=>{if(e.key==='Enter')showBooth(b)};svg.appendChild(pg);
+      const cx=b.poly.reduce((a,p)=>a+p[0],0)/b.poly.length, cy=Math.max(...b.poly.map(p=>p[1]))-2;
+      map.insertAdjacentHTML('beforeend',b.logo?`<button class="poly-logo" style="left:${cx}%;top:${cy-3}%" title="${esc(b.name)}"><img src="${esc(b.logo)}" alt="" /></button><span class="bid below" style="left:${cx}%;top:${cy+1.2}%">${esc(b.id)}</span>`:`<span class="poly-label" style="left:${cx}%;top:${cy}%">${esc(b.id)}</span>`);map.querySelector('.poly-logo')?.addEventListener('click',()=>showBooth(b));return}
+    const inBox=!!b.logo;
+    const el=document.createElement('button');el.className='hotspot '+(b.category==='Partnership'?'partnership':b.category==='Facility'?'facility':'')+(inBox?' has-logo':'');
+    el.style.cssText=`left:${b.x}%;top:${b.y}%;width:${b.w}%;height:${b.h}%;--rot:${b.rot||0}deg`;el.title=`${b.id} – ${b.name}`;el.setAttribute('aria-label',`${b.id} ${b.name}`);
+    el.innerHTML=inBox?`<img src="${esc(b.logo)}" alt="" />`:`<span>${esc(b.id)}</span>`;el.onclick=()=>showBooth(b);map.appendChild(el);
+    if(inBox){const pos=TAG_POS[b.id]||(b.category==='Job Fair'&&b.y<32?'above':'below');const t=document.createElement('span');t.className='bid '+pos;t.textContent=b.id;
+      t.style.cssText=pos==='left'?`left:${b.x}%;top:${b.y+b.h/2}%`:`left:${b.x+b.w/2}%;top:${pos==='above'?b.y:b.y+b.h}%`;map.appendChild(t)}
+  })
+}
+let activeRoom=null;
+function renderRooms(active=activeRoom){const tabs=document.getElementById('roomTabs'), sch=document.getElementById('schedule');const rooms=D.rooms.filter(r=>D.classes.some(c=>c.room===r.id)).sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));activeRoom=active||rooms[0]?.id;tabs.innerHTML='';rooms.forEach(r=>{let btn=document.createElement('button');btn.textContent=r.floor?`${r.name} · ${r.floor}`:r.name;btn.className=r.id===activeRoom?'active':'';btn.onclick=()=>renderRooms(r.id);tabs.appendChild(btn)});const q=document.getElementById('search').value.trim().toLowerCase();sch.innerHTML='';D.classes.filter(c=>c.room===activeRoom&&(!q||(`${c.topic} ${c.speaker} ${c.org} ${c.takeaway||''}`).toLowerCase().includes(q))).forEach(c=>{let x=document.createElement('div');x.className='class-card';x.innerHTML=`<div class="time">${esc(c.start)} – ${esc(c.end)}</div><div class="topic">${esc(c.topic)}</div><div class="small">${esc(c.speaker)}${c.org?` · ${esc(c.org)}`:''}</div>`;x.onclick=()=>showClass(c);sch.appendChild(x)});if(!sch.children.length)sch.innerHTML='<div class="small">No matching classes.</div>'}
+document.querySelectorAll('.filter').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));btn.classList.add('active');currentFilter=btn.dataset.filter;renderHotspots()});
+document.getElementById('search').addEventListener('input',()=>{renderHotspots();renderRooms()});document.getElementById('banner').onclick=()=>{modalTitle.textContent='BIM Bootcamp 2026';modalBody.innerHTML='<img src="assets/poster.webp" alt="BIM Bootcamp 2026 poster" style="width:100%;display:block;border-radius:10px" />';modal.classList.add('show')};document.getElementById('close').onclick=()=>modal.classList.remove('show');modal.onclick=e=>{if(e.target===modal)modal.classList.remove('show')};document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('show')});
+renderHotspots();renderRooms();
+// ---- Tabs ----
+const R=window.TBIM_ROUTES;
+function showTab(name){document.querySelectorAll('.tabbar button').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));document.getElementById('tab-map').hidden=name!=='map';document.getElementById('tab-route').hidden=name!=='route'}
+document.querySelectorAll('.tabbar button').forEach(b=>b.onclick=()=>{showTab(b.dataset.tab);history.replaceState(null,'',b.dataset.tab==='route'?`#route=${curRoute.id}`:'#')});
+
+// ---- Route & Training Rooms ----
+const PIN_ICON={entrance:'→',registration:'✓',room:'■',escalator:'↗',lift:'⇅',break:'☕'}, PIN_COLOR={entrance:'#0b2d4d',registration:'#e0218a',room:'#1776d2',escalator:'#5b6b7b',lift:'#5b6b7b',break:'#e8a400'};
+let curRoute=R.routes[0], curFloor=R.floors[0].id;
+const floorEl=document.getElementById('floor'), floorSvg=document.getElementById('floorSvg');
+const pct=(f,[x,y])=>[x/f.w*100,y/f.h*100];
+function onRoute(p){return curRoute.legs.some(l=>l.floor===p.floor&&l.points.some(([x,y])=>Math.hypot(x-p.x,y-p.y)<40))}
+function showFloor(fid){
+  curFloor=fid;const f=R.floors.find(x=>x.id===fid);const used=new Set(curRoute.legs.map(l=>l.floor));
+  document.getElementById('floorTabs').innerHTML='';R.floors.forEach(x=>{const b=document.createElement('button');b.textContent=x.id;b.className=(x.id===fid?'active ':'')+(used.has(x.id)?'used':'');b.onclick=()=>showFloor(x.id);document.getElementById('floorTabs').appendChild(b)});
+  document.getElementById('floorTitle').textContent=f.name;document.getElementById('floorImg').src=f.image;
+  floorEl.style.setProperty('--rc',curRoute.color);
+  floorEl.querySelectorAll('.pin,.goal').forEach(e=>e.remove());floorSvg.innerHTML='';
+  curRoute.legs.filter(l=>l.floor===fid&&l.points.length>1).forEach(l=>{const pts=l.points.map(p=>pct(f,p).join(',')).join(' ');floorSvg.insertAdjacentHTML('beforeend',`<polyline class="route-halo" points="${pts}"/><polyline class="route-line" stroke="${curRoute.color}" points="${pts}"/>`)});
+  const last=curRoute.legs[curRoute.legs.length-1];if(last.floor===fid){const [x,y]=pct(f,last.points[last.points.length-1]);floorEl.insertAdjacentHTML('beforeend',`<div class="goal" style="left:${x}%;top:${y}%"></div>`)}
+  R.places.filter(p=>p.floor===fid).forEach(p=>{const [x,y]=pct(f,[p.x,p.y]);const el=document.createElement('div');el.className='pin '+(onRoute(p)?'on':'dim');el.style.cssText=`left:${x}%;top:${y}%;--c:${PIN_COLOR[p.type]}`;el.title=p.label;el.innerHTML=`<i>${PIN_ICON[p.type]||'•'}</i><span>${esc(p.label)}</span>`;el.onclick=()=>showPlace(p);floorEl.appendChild(el)});
+  const floors=[...new Set(curRoute.legs.map(l=>l.floor))], i=floors.indexOf(fid), nav=document.getElementById('floorNav');nav.innerHTML='';
+  if(i>0)nav.insertAdjacentHTML('beforeend',`<button class="back" data-f="${floors[i-1]}">← ${floors[i-1]}</button>`);
+  if(i>=0&&i<floors.length-1)nav.insertAdjacentHTML('beforeend',`<button data-f="${floors[i+1]}">Continue on ${floors[i+1]} →</button>`);
+  nav.querySelectorAll('button').forEach(b=>b.onclick=()=>showFloor(b.dataset.f));
+  document.querySelectorAll('#routeInfo .steps li').forEach(li=>li.classList.toggle('here',li.dataset.f===fid));
+  const xs=curRoute.legs.filter(l=>l.floor===fid).flatMap(l=>l.points.map(p=>p[0]/f.w)), sc=document.getElementById('floorScroll');
+  if(xs.length)sc.scrollLeft=(Math.min(...xs)+Math.max(...xs))/2*floorEl.offsetWidth-sc.clientWidth/2;
+}
+function breakTimes(){const slots=[...new Map(D.classes.map(c=>[c.start+c.end,[c.start,c.end]])).values()].sort();const merged=[];slots.forEach(([s,e])=>{const m=merged[merged.length-1];if(m&&s<=m[1]){if(e>m[1])m[1]=e}else merged.push([s,e])});const mins=t=>{const [h,m]=t.split(':').map(Number);return h*60+m};return merged.slice(1).map((m,i)=>({start:merged[i][1],end:m[0],lunch:mins(m[0])-mins(merged[i][1])>=45}))}
+const PLACE_ROUTE={ENT:'reg',REG:'reg',BRK:'break',RE1:'tr2',RE2:'tr2',CE1:'tr3',CE2:'tr3',CE3:'tr3',LIFT1:'exec',LIFT14:'exec'};
+function routeForPlace(p){return R.routes.find(r=>p.room&&r.room===p.room)||R.routes.find(r=>r.id===PLACE_ROUTE[p.id])}
+function showPlace(p){
+  const room=D.rooms.find(r=>r.id===p.room), cls=room?D.classes.filter(c=>c.room===room.id):[];
+  modalTitle.textContent=p.label;
+  modalBody.innerHTML=(p.photo?`<img class="room-photo" src="${esc(p.photo)}" alt="${esc(p.label)} photos" />`:'')+(p.info?`<div class="photo-note">${esc(p.info)}</div>`:'')
+    +(cls.length?`<h4>Sessions</h4>`+cls.map(c=>`<div class="mini" data-c="${esc(c.id)}"><span class="time">${esc(c.start)} – ${esc(c.end)}</span><span>${esc(c.topic)}</span></div>`).join(''):'');
+  modalBody.querySelectorAll('.mini[data-c]').forEach(m=>m.onclick=()=>showClass(D.classes.find(c=>c.id===m.dataset.c)));
+  const rt=routeForPlace(p);if(rt&&rt.id!==curRoute.id||rt&&document.getElementById('tab-route').hidden){const b=document.createElement('button');b.className='route-link';b.textContent=`Show route to ${rt.id==='reg'?'Registration':rt.name} →`;b.onclick=()=>{modal.classList.remove('show');showTab('route');selectRoute(rt.id)};modalBody.appendChild(b)}
+  modal.classList.add('show')}
+function renderRouteInfo(){
+  const rt=curRoute, room=D.rooms.find(r=>r.id===rt.room), box=document.getElementById('routeInfo');box.style.setProperty('--rc',rt.color);
+  let h=`<h2>${esc(rt.name)}${rt.sub?` <span class="small">· ${esc(rt.sub)}</span>`:''}</h2><ol class="steps">${rt.steps.map(s=>`<li data-f="${s.floor}"><span><span class="fl">${s.floor}</span>${esc(s.text)}</span></li>`).join('')}</ol>`;
+  if(rt.breaks)h+=`<h2 style="margin-top:14px">Break times</h2>`+breakTimes().map(b=>`<div class="mini"><span class="time">${b.start} – ${b.end}</span><span>${b.lunch?'Lunch':'Coffee &amp; bread'}</span></div>`).join('');
+  if(room){const cls=D.classes.filter(c=>c.room===room.id);h+=`<h2 style="margin-top:14px">Sessions in ${esc(room.name)}</h2>`+(cls.length?cls.map(c=>`<div class="mini" data-c="${esc(c.id)}"><span class="time">${esc(c.start)} – ${esc(c.end)}</span><span>${esc(c.topic)}</span></div>`).join(''):`<div class="small">${esc(room.description||'Details to be announced.')}</div>`)}
+  const rp=R.places.find(p=>p.room&&p.room===rt.room&&p.photo);if(rp)h=h.replace('</h2>',`</h2><img class="room-photo" id="routePhoto" src="${esc(rp.photo)}" alt="${esc(rp.label)} photos" />`);
+  box.innerHTML=h;if(rp)document.getElementById('routePhoto').onclick=()=>showPlace(rp);box.querySelectorAll('.steps li').forEach(li=>li.onclick=()=>showFloor(li.dataset.f));box.querySelectorAll('.mini[data-c]').forEach(m=>m.onclick=()=>showClass(D.classes.find(c=>c.id===m.dataset.c)));
+}
+function selectRoute(id){
+  curRoute=R.routes.find(r=>r.id===id)||R.routes[0];
+  document.querySelectorAll('.route-card').forEach(c=>c.classList.toggle('active',c.dataset.r===curRoute.id));
+  renderRouteInfo();showFloor(curRoute.legs[0].floor);
+  if(!document.getElementById('tab-route').hidden)history.replaceState(null,'',`#route=${curRoute.id}`);
+}
+R.routes.forEach(r=>{const b=document.createElement('button');b.className='route-card';b.dataset.r=r.id;b.style.setProperty('--rc',r.color);b.innerHTML=`<span class="sw"></span><span><b>${esc(r.name)}</b>${r.sub?`<small>${esc(r.sub)}</small>`:''}</span>`;b.onclick=()=>selectRoute(r.id);document.getElementById('routeList').appendChild(b)});
+const hashRoute=location.hash.match(/^#route(?:=(\w+))?/);
+if(hashRoute){showTab('route');selectRoute(hashRoute[1]||R.routes[0].id)}else selectRoute(R.routes[0].id);
+</script>
+</body>
+</html>
