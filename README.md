@@ -30,7 +30,17 @@ Open `index.html` in a modern browser. It works offline.
   ```
   (No extra packages needed. `data.js` is overwritten — do not edit it by hand.)
 - Exported: booth logos (see above), booths (rows with `Visible = FALSE` or `DataStatus = Hidden` are skipped), rooms, and classes (speaker name, company, topic, key takeaway, time).
+- Booth `Notes` are internal and are **not** shown on the map. A booth whose `DataStatus` is not `Ready` (e.g. `Needs confirmation`) shows "Details to be confirmed" instead of its description / contact.
+- Training sessions show the **company** only (no speaker name).
 - Not exported: speaker personal data (car plate, food allergy, phone, PIC) — it stays in Excel only.
+
+## One-file version (to share / upload)
+`TBIM_Interactive_Map.html` contains everything (page, data, routes and all images) in a single file — open it anywhere, offline, no `assets/` folder needed. Rebuild it after any change:
+```
+python3 excel_to_data.py        # only if the Excel file changed
+python3 build_single_html.py
+```
+Do not edit `TBIM_Interactive_Map.html` directly — edit `index.html`, Excel, `routes.js` or `assets/`, then rebuild. (Install Pillow — `pip3 install pillow` — to make the file smaller.)
 
 ## Two tabs
 1. **Job Fair & Partners** — clickable booth map (`assets/floorplan_clean.png`, data from Excel → `data.js`).

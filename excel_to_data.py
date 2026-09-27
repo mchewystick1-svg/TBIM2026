@@ -163,7 +163,8 @@ def main():
             "description": txt(b.get("ShortDescription")), "products": txt(b.get("ProductsServices")),
             "contact": txt(b.get("ContactPerson")), "phone": txt(b.get("ContactPhone")),
             "website": txt(b.get("Website")), "qr": txt(b.get("QR_Link")),
-            "logo": logo_for(txt(b["BoothID"]), pictures.get(b["_row"])), "note": txt(b.get("Notes")),
+            "logo": logo_for(txt(b["BoothID"]), pictures.get(b["_row"])),
+            "status": txt(b.get("DataStatus")),  # Notes stay internal (not exported)
         })
 
     rooms = [{

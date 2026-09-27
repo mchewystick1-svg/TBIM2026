@@ -1,7 +1,7 @@
 // Wayfinding data for the "Route & Training Rooms" tab.
 // 1F / 2F / 3F: SPU Building 11 CAD plans (TBIM layout, "Plan Level 1-3"). 14F: "SPU Layout/BIMBOOT CAMP2026 (15ก.ย.69).pdf".
 // All x, y values are PIXELS on that floor's image (w × h below) — open the .jpg to read positions.
-// photo: shown when the pin is clicked (and for the room of the selected route). This file is edited by hand (NOT generated from Excel).
+// photo: shown when the pin is clicked (and in the panel of a route whose room / place matches). This file is edited by hand (NOT generated from Excel).
 window.TBIM_ROUTES = {
   floors: [
     {id: "1F",  name: "1F · Exhibition Hall & TR-1", image: "assets/floors/1F.jpg",  w: 1530, h: 550},
@@ -14,7 +14,7 @@ window.TBIM_ROUTES = {
   places: [
     {id: "ENT",   floor: "1F",  x: 425,  y: 395, type: "entrance",     label: "Main Entrance", photo: "assets/rooms/HALL.jpg", info: "Building 11 · 1F Zone A exhibition hall."},
     {id: "REG",   floor: "1F",  x: 340,  y: 243, type: "registration", label: "Registration", photo: "assets/rooms/HALL.jpg", info: "Registration desk (2 staff). T-shirts are handed out after registration."},
-    {id: "BRK",   floor: "1F",  x: 715,  y: 315, type: "break",        label: "Break · coffee, bread & lunch", info: "Coffee & bread in the breaks, lunch at midday."},
+    {id: "BRK",   floor: "1F",  x: 715,  y: 315, type: "break",        label: "Break · coffee, bread & lunch", photo: "assets/rooms/BREAK.svg", info: "Coffee & bread in the breaks, lunch at midday."},
     {id: "CE1",   floor: "1F",  x: 515,  y: 340, type: "escalator",    label: "Central escalator ↑ 3F"},
     {id: "RE1",   floor: "1F",  x: 1350, y: 245, type: "escalator",    label: "Right escalator ↑ 2F"},
     {id: "LIFT1", floor: "1F",  x: 950,  y: 200, type: "lift",         label: "Lift ↑ 14F"},
@@ -62,7 +62,7 @@ window.TBIM_ROUTES = {
       {floor: "2F", text: "At 2F, stay on the central escalator and continue up."},
       {floor: "3F", text: "At 3F, walk straight ahead — Training Room 3 (Movie Room)."}
     ]},
-    {id: "break", name: "Break point", sub: "Coffee, bread & lunch · 1F", color: "#e8a400", legs: [
+    {id: "break", name: "Break point", sub: "Coffee, bread & lunch · 1F", place: "BRK", color: "#e8a400", legs: [
       {floor: "1F", points: [[440,470],[425,395],[415,320],[365,262],[340,243],[420,285],[600,295],[715,315]]}
     ], steps: [
       {floor: "1F", text: "The Break point is on the right side of the exhibition hall, next to the lift lobby."},
